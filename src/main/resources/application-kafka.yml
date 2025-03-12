@@ -1,7 +1,21 @@
 spring:
     kafka:
-        producer:
-            bootstrap-servers: localhost:9092
+        bootstrap-servers: localhost:9092  # Kafka broker address
 
-server:
-    port: 9092
+        producer:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+            acks: all  # Ensures message durability
+
+        consumer:
+            group-id: fraud-detection-group
+            auto-offset-reset: earliest  # Read from the beginning if no offset is found
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+        streams:
+            application-id: fraud-detection-app
+            properties:
+                default:
+                    key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                    value-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
